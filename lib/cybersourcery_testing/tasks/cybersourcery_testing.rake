@@ -12,7 +12,7 @@ namespace :cybersourcery do
     ru_path = args.ru_path.present? ? args.ru_path : default_ru_path
 
     RakeUp::ServerTask.new('translating_proxy') do |t|
-      t.run_command = "#{config['runner']} -I #{config['spec_path']} -p #{config['translating_proxy_port']} #{ru_path}"
+      t.run_command = "#{config['translating_proxy_runner']} -p #{config['translating_proxy_port']} #{ru_path}"
     end
 
     Rake::Task['translating_proxy'].invoke
@@ -29,7 +29,7 @@ namespace :cybersourcery do
     initializer_path = args.initializer_path.present? ? args.initializer_path : "#{Rails.root}/config/initializers/cybersourcery.rb"
 
     RakeUp::ServerTask.new('target_host') do |t|
-      t.run_command = "#{config['runner']} #{target_host_path} #{initializer_path} -p #{config['target_host_port']}"
+      t.run_command = "#{config['target_host_runner']} #{target_host_path} #{initializer_path} -p #{config['target_host_port']}"
     end
 
     Rake::Task['target_host'].invoke
