@@ -13,9 +13,11 @@ CybersourceryTesting::Vcr.configure
 get('/') { "It's not a trick it's an illusion" }
 
 get '/*' do |path|
-  proxy_request do |uri|
-    Net::HTTP.get_response(uri)
-  end
+  response = Net::HTTP.get_response(URI uri)
+  code     = response.code.to_i
+  type     = response.content_type
+  body     = response.body
+  [code, { 'Content-Type' => type }, body]
 end
 
 post '/*' do |path|
