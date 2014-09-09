@@ -25,6 +25,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'vcr'
   spec.add_dependency 'shotgun'
   spec.add_dependency 'rakeup'
+  spec.add_dependency 'dotenv'
   spec.add_development_dependency "bundler", "~> 1.6"
   spec.add_development_dependency "rake"
 end
