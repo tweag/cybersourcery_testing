@@ -6,7 +6,6 @@ require 'nokogiri'
 require 'webmock'
 require 'cybersourcery'
 require 'cybersourcery_testing/vcr'
-require ARGV[0] # path to cybersourcery initializer
 
 CybersourceryTesting::Vcr.configure
 
@@ -21,10 +20,10 @@ get '/*' do |path|
 end
 
 post '/*' do |path|
-  uri = URI "#{Cybersourcery.configuration.sop_test_url}/#{path}"
+  uri = URI "#{ENV['CYBERSOURCERY_SOP_TEST_URL']}/#{path}"
   response = nil
 
-  if Cybersourcery.configuration.use_vcr_in_tests
+  if ENV['CYBERSOURCERY_USE_VCR_IN_TESTS']
     VCR.use_cassette('cybersourcery',
       record: :new_episodes,
       match_requests_on: %i(method uri card_number_equality)) do
