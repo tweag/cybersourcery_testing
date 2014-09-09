@@ -1,9 +1,9 @@
 require 'cybersourcery_testing/translating_proxy'
 
 run CybersourceryTesting::TranslatingProxy.new({
-  translating_proxy: 'http://127.0.0.1:5555',
-  silent_post_server: 'https://testsecureacceptance.cybersource.com',
-  target_host: 'http://127.0.0.1:5556',
-  response_page_url: 'http://tranquil-ocean-5865.herokuapp.com/confirm',
+  translating_proxy: ENV['CYBERSOURCERY_SOP_PROXY_URL'],
+  silent_post_server: ENV['CYBERSOURCERY_SOP_TEST_URL'],
+  target_host: ENV['CYBERSOURCERY_TARGET_HOST_URL'],
+  response_page_url: ENV['CYBERSOURCERY_RESPONSE_PAGE_URL'],
   local_response_page_url: 'http://127.0.0.1:3000/confirm'
 })
