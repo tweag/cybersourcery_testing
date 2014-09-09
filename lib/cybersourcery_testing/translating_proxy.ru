@@ -1,8 +1,5 @@
 require 'cybersourcery_testing/translating_proxy'
 
-puts 'WE ARE HERE'
-puts ARGV[0]
-
 run CybersourceryTesting::TranslatingProxy.new({
   translating_proxy: 'http://127.0.0.1:5555',
   silent_post_server: 'https://testsecureacceptance.cybersource.com',
