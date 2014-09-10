@@ -24,9 +24,11 @@ post '/*' do |path|
   response = nil
 
   if ENV['CYBERSOURCERY_USE_VCR_IN_TESTS']
-    VCR.use_cassette('cybersourcery',
+    VCR.use_cassette(
+      'cybersourcery',
       record: :new_episodes,
-      match_requests_on: %i(method uri card_number_equality)) do
+      match_requests_on: CybersourceryTesting::Vcr.match_requests_on
+    ) do
         response = Net::HTTP.post_form(uri, params)
       end
   else
