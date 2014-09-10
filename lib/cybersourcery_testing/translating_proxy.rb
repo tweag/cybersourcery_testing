@@ -29,6 +29,11 @@ module CybersourceryTesting
       super env
     end
 
+    # override parent - we need this refreshed with each request, since the test server port changes
+    def _response_mapping
+      request_mapping.invert
+    end
+
     def target_host
       @target_host
     end
