@@ -5,5 +5,5 @@ run CybersourceryTesting::TranslatingProxy.new({
   silent_post_server: ENV['CYBERSOURCERY_SOP_TEST_URL'],
   target_host: ENV['CYBERSOURCERY_TARGET_HOST_URL'],
   response_page_url: ENV['CYBERSOURCERY_RESPONSE_PAGE_URL'],
-  local_response_page_url: 'http://127.0.0.1:3000/confirm'
+  local_response_page_path: ENV['CYBERSOURCERY_LOCAL_RESPONSE_PAGE_PATH']
 })
