@@ -6,10 +6,15 @@ require 'nokogiri'
 require 'webmock'
 require 'cybersourcery'
 require 'cybersourcery_testing/vcr'
+require 'cybersourcery_testing/translating_proxy_middleware'
+
+use CybersourceryTesting::TranslatingProxyMiddleware
 
 CybersourceryTesting::Vcr.configure
 
-get('/') { "It's not a trick it's an illusion" }
+get('/') do
+  [200, {'Content-Type' => 'text/html'}, ["It's not a trick it's an illusion"]]
+end
 
 get '/*' do |path|
   response = Net::HTTP.get_response(URI uri)
