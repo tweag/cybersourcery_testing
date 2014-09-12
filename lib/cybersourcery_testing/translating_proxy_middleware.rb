@@ -25,14 +25,31 @@ module CybersourceryTesting
         # solution for now.
         source_request = Rack::Request.new env
         @referrer = source_request.referrer ? URI(source_request.referrer) : nil
-        super(env)
+
+        # TODO: this *almost* works properly
+        #
+        # VCR will work fine on the first test run. But then the Sinatra server gets into a
+        # strange state. Subsequent test runs will hang, and canceling Sinatra isn't sufficient to
+        # stop it (you need to enter an explicit kill command). I've tried overriding methods in the
+        # related gems that cache various values, but that doesn't seem to be the problem.
+        if ENV['CYBERSOURCERY_USE_VCR_IN_TESTS']
+          VCR.use_cassette(
+            'cybersourcery',
+            record: :new_episodes,
+            match_requests_on: CybersourceryTesting::Vcr.match_requests_on
+          ) do
+            super(env)
+          end
+        else
+          super(env)
+        end
       else
         @app.call(env)
       end
     end
 
     def proxy?(env)
-      # The browser keeps requesting favicon.ico, which throws errors when the requests is forwarded
+      # The browser keeps requesting favicon.ico, which throws errors when the request is forwarded
       # to the Cybersource server. So ony forward POST requests.
       env['REQUEST_METHOD'] == 'POST'
     end
