@@ -7,9 +7,34 @@ module CybersourceryTesting
     end
 
     def call(env)
-      source_request = Rack::Request.new env
-      @referrer = source_request.referrer ? URI(source_request.referrer) : nil
-      super(env)
+      if proxy?(env)
+        # TODO: see if there is a better way to do this.
+        #
+        # We need the HTTP_REFERER so we can keep track of the test server port, which is randomized
+        # by Selenium, as we need to return to the test server when we're done with the transaction.
+        #
+        # Conceptually, http_referrer should be part of env, but env is not an instance variable.
+        # We would have to rewrite multiple method signatures and a bunch of calls in the parent
+        # translating_proxy.rb if we put the referrer in env (we need it in request_mapping(), which
+        # is at the end of a chain of calls). Or rewrite the parent and grandparent classes to make
+        # env an instance variable.
+        #
+        # The grandparent perform_request() (invoked by call()) already does a ton of stuff. Ideally
+        # setting @referrer would be more isolated, but I don't see a reasonably quick way to
+        # disentangle the dependencies. ...So what I'm doing here seems like the least painful
+        # solution for now.
+        source_request = Rack::Request.new env
+        @referrer = source_request.referrer ? URI(source_request.referrer) : nil
+        super(env)
+      else
+        @app.call(env)
+      end
+    end
+
+    def proxy?(env)
+      # The browser keeps requesting favicon.ico, which throws errors when the requests is forwarded
+      # to the Cybersource server. So ony forward POST requests.
+      env['REQUEST_METHOD'] == 'POST'
     end
 
     def target_host
