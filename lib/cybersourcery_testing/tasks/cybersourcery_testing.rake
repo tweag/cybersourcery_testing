@@ -12,7 +12,8 @@ namespace :cybersourcery do
     end
 
     RakeUp::ServerTask.new('cybersource_proxy') do |t|
-      t.run_command = "#{ENV['CYBERSOURCERY_SOP_PROXY_RUNNER']} #{proxy_path} -p #{ENV['CYBERSOURCERY_SOP_PROXY_PORT']}"
+      proxy_uri = URI ENV['CYBERSOURCERY_SOP_PROXY_URL']
+      t.run_command = "shotgun #{proxy_path} -p #{proxy_uri.port}"
     end
 
     Rake::Task['cybersource_proxy'].invoke
