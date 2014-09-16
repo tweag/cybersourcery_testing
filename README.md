@@ -4,7 +4,7 @@ For Rails projects, supports feature/integration testing of the Cybersource Sile
 
 ## Features
 
-Automated testing with Cybersource SOP is more difficult than typical 3rd party services. When a transaction is submitted, Cybersource dynamically generates a hidden form in the user's browser, which it then automatically submits to your site's response page for the transaction. Also, both your submission to Cybersource, and the response from Cybersource, require the verification of signatures that are unique to each transaction. The Cybersourcery Testing gem handles these complexities for you.
+Automated testing with Cybersource SOP is more difficult than typical 3rd party services. When a transaction is submitted, Cybersource dynamically generates a hidden form in the user's browser, which it then automatically submits to your site's response page for the transaction. The Cybersourcery Testing gem handles this complexity for you.
 
 It includes:
 
