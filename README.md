@@ -9,7 +9,7 @@ Automated testing with Cybersource SOP is more difficult than typical 3rd party 
 It includes:
 
 * A proxy server to stand-in for the Cybersource SOP test server. It runs on Sinatra, and includes a middleware translating proxy which directs both requests to, and responses from, the Cybersource SOP test server to the Sinatra server.
-* Detection and alerts for undocumented Cybersource SOP error conditions. Cybersource will return an unexplained server error if you attempt to pass arrays in form data, or pass values that exceed 700 characters in length. The proxy server will detect these conditions and raise exceptions that include clear explanations.
+* Detection and alerts for undocumented Cybersource SOP error conditions, where Cybersource returns only a general server error message. The proxy server will detect these conditions and raise exceptions that include clear explanations.
 * VCR to record your test transactions, for re-use in future test runs. 
 * The ability to define your own custom matchers, to detect variations in the data in test submissions. The gem comes with a check for changes in the credit card number. You can add checks for other fields as needed for your business requirements.
 
