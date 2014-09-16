@@ -40,8 +40,8 @@ module CybersourceryTesting
           raise "You are attempting to pass a value that is not a String to Cybersource. This will cause Cybersource to throw a generic server error. You passed: #{k}: #{v.to_s}"
         end
 
-        if v.length >= 700
-          raise "You are attempting to pass a value to Cybersource that is 700 characters or greater. This will cause Cybersource to throw a generic server error. You passed: #{k}: #{v}"
+        if k == 'signed_field_names' && v.length >= 700
+          raise "You are attempting to pass a signed_fields value to Cybersource that is 700 characters or greater. This will cause Cybersource to throw a generic server error. You passed: #{k}: #{v}"
         end
       end
     end
