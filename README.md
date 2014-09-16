@@ -1,18 +1,18 @@
 # Cybersourcery Testing
 
-For Rails projects, supports feature/integration testing of the Cybersource Silent Order POST (SOP) service. It can be used with [the Cybersourcery gem](https://github.com/promptworks/cybersourcery) or as a stand-alone testing service. It uses a Sinatra proxy server and VCR, to avoid the need for repeated requests to the Cybersource SOP test server.
+For Rails projects, supports feature/integration testing of the Cybersource Silent Order POST (SOP) service. It can be used with [the Cybersourcery gem](https://github.com/promptworks/cybersourcery) or as a stand-alone testing service. It uses a Sinatra proxy server and [VCR](https://github.com/vcr/vcr), to avoid the need for repeated requests to the Cybersource SOP test server.
 
 ## Features
 
-Automated testing with Cybersource SOP is more difficult than typical 3rd party services. When a transaction is submitted, Cybersource dynamically generates a hidden form in the user's browser, which it then automatically submits to your site's response page for the transaction. Also, both your submission to Cybersource, and the response from Cybersource, require the verification of signatures that are unique to each transaction.
+Automated testing with Cybersource SOP is more difficult than typical 3rd party services. When a transaction is submitted, Cybersource dynamically generates a hidden form in the user's browser, which it then automatically submits to your site's response page for the transaction. Also, both your submission to Cybersource, and the response from Cybersource, require the verification of signatures that are unique to each transaction. The Cybersourcery Testing gem handles these complexities for you.
 
-The Cybersourcery Testing gem includes:
+It includes:
 
 * A proxy server to stand-in for the Cybersource SOP test server. It runs on Sinatra, and includes a middleware translating proxy which directs both requests to, and responses from, the Cybersource SOP test server to the Sinatra server.
-* [VCR](https://github.com/vcr/vcr) to record your test transactions, for re-use in future test runs. 
+* VCR to record your test transactions, for re-use in future test runs. 
 * The ability to define your own custom matchers, to detect variations in the data in test submissions. The gem comes with a check for changes in the credit card number. You can add checks for other fields as needed for your business requirements.
 
-When a test is run that shows a change against any of the matchers you have defined, the proxy server will forward the test to the actual Cybersource SOP test server, which VCR will record. Subsequent runs of the same tests will rely on the VCR recordings. This means you can do repeated feature/integration testing without requiring ongoing contact with the Cybersource SOP test server.
+When a test is run that shows a change against any of the matchers you have defined, the proxy server will forward the transaction to the actual Cybersource SOP test server, and VCR will record the transaction. Subsequent runs of the same test will rely on the VCR recording. This means you can do repeated feature/integration testing without requiring ongoing contact with the Cybersource SOP test server.
 
 ## Installation
 
@@ -33,22 +33,24 @@ When a test is run that shows a change against any of the matchers you have defi
   
 3. Update your .env settings as needed:
 
-* CYBERSOURCERY_SOP_TEST_URL: the URL of the Cybersource Silent Order Post (SOP) test server. You should not need to change this.
-* CYBERSOURCERY_SOP_PROXY_URL: the base URL the Sinatra proxy will use.
-* CYBERSOURCERY_RESPONSE_PAGE_URL: this must match the "Customer Response Page" URL you have set in the Cybersource Business Center for the profile you will use when testing.
-* CYBERSOURCERY_LOCAL_RESPONSE_PAGE_PATH: the path to the local equivalent of the "Customer Response Page" (should be in URI path format, e.g. `/confirm`)
-* CYBERSOURCERY_USE_VCR_IN_TESTS: `true` or `false`. This should be `true` unless you have a special reason to change it. If you do not set this to `true` the Sinatra proxy will always forward all requests to the actual Cybersource SOP test server.
-* CYBERSOURCERY_VCR_CASSETTE_DIR: the relative path to where your VCR cassette file should be stored
+  * CYBERSOURCERY_SOP_TEST_URL: the URL of the Cybersource Silent Order Post (SOP) test server. You should not need to change this.
+  * CYBERSOURCERY_SOP_PROXY_URL: the base URL the Sinatra proxy will use.
+  * CYBERSOURCERY_RESPONSE_PAGE_URL: this must match the "Customer Response Page" URL you have set in the Cybersource Business Center for the profile you will use when testing.
+  * CYBERSOURCERY_LOCAL_RESPONSE_PAGE_PATH: the path to the local equivalent of the "Customer Response Page" (should be in URI path format, e.g. `/confirm`)
+  * CYBERSOURCERY_USE_VCR_IN_TESTS: `true` or `false`. This should be `true` unless you have a special reason to change it. If you do not set this to `true` the Sinatra proxy will always forward all requests to the actual Cybersource SOP test server.
+  * CYBERSOURCERY_VCR_CASSETTE_DIR: the relative path to where your VCR cassette file should be stored
 
 ## Usage
 
 ### Optional: Define matchers for VCR
 
-When you submit a transaction through the proxy server, it will forward the request to the Cybersource SOP test sever only if there is a change in a field that VCR has a matcher for. VCR checks its existing cassettes to see if the request has changes to any of the fields it has matchers for. So it's up to you to decide which fields are important for detecting and testing changes in. It comes with a matcher for changes in the credit card number. If that's all you need, then you can skip the rest of this step.
+When you submit a transaction through the proxy server, it will forward the request to the Cybersource SOP test sever only if there is a change in a field that VCR has a matcher for. VCR checks its existing cassettes to see if the request has changes to any of the fields it has matchers for. So it's up to you to decide which fields are important for detecting and testing changes in.
+
+A matcher for detecting changes in the credit card number is included. If that's all you need, then you can skip the rest of this step.
 
 To set up your own matchers:
 
-1. Create a file to put your matchers in. Here is an example file for detecting changes to the card type:
+1. Create a file to put your matchers in. Here is an example for detecting changes to the card type:
  
   ```ruby
   require 'cybersourcery_testing/cybersource_proxy'
@@ -84,6 +86,6 @@ It's a Sinatra server, running with Shotgun, which means you do not need to rest
 
 1. Fork it ( https://github.com/[my-github-username]/cybersourcery_testing/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`gi t commit -am 'Add some feature'`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create a new Pull Request
