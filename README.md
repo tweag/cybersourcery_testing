@@ -1,6 +1,6 @@
 # Cybersourcery Testing
 
-For Rails projects, supports feature/integration testing of the Cybersource Silent Order POST (SOP) service. It can be used with [the Cybersourcery gem](https://github.com/promptworks/cybersourcery) or as a stand-alone testing service. It uses a Sinatra proxy server and [VCR](https://github.com/vcr/vcr), to avoid the need for repeated requests to the Cybersource SOP test server.
+The Cybersourcery Testing gem is designed for use with Rails projects, and supports feature/integration testing of the Cybersource Silent Order POST (SOP) service. It can be used with [the Cybersourcery gem](https://github.com/promptworks/cybersourcery) or as a stand-alone testing service. It uses a Sinatra proxy server and [VCR](https://github.com/vcr/vcr), to avoid the need for repeated requests to the Cybersource SOP test server.
 
 ## Features
 
@@ -39,7 +39,7 @@ When a test is run that shows a change against any of the matchers you have defi
   * CYBERSOURCERY_RESPONSE_PAGE_URL: this must match the "Customer Response Page" URL you have set in the Cybersource Business Center for the profile you will use when testing.
   * CYBERSOURCERY_LOCAL_RESPONSE_PAGE_PATH: the path to the local equivalent of the "Customer Response Page" (should be in URI path format, e.g. `/confirm`)
   * CYBERSOURCERY_USE_VCR_IN_TESTS: `true` or `false`. This should be `true` unless you have a special reason to change it. If you do not set this to `true` the Sinatra proxy will always forward all requests to the actual Cybersource SOP test server.
-  * CYBERSOURCERY_VCR_CASSETTE_DIR: the relative path to where your VCR cassette file should be stored
+  * CYBERSOURCERY_VCR_CASSETTE_DIR: the relative path to where your VCR cassette file should be stored.
 
 ## Usage
 
