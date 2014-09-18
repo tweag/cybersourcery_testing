@@ -36,6 +36,7 @@ When a test is run that shows a change against any of the matchers you have defi
 
   * CYBERSOURCERY_SOP_TEST_URL: the URL of the Cybersource Silent Order Post (SOP) test server. You should not need to change this.
   * CYBERSOURCERY_SOP_PROXY_URL: the base URL the Sinatra proxy will use.
+  * CYBERSOURCERY_SOP_PROXY_RUNNER: `ruby` by default, which means Sinatra will start. You can change this to `shotgun`, etc if you wish.
   * CYBERSOURCERY_RESPONSE_PAGE_URL: this must match the "Customer Response Page" URL you have set in the Cybersource Business Center for the profile you will use when testing.
   * CYBERSOURCERY_LOCAL_RESPONSE_PAGE_PATH: the path to the local equivalent of the "Customer Response Page" (should be in URI path format, e.g. `/confirm`)
   * CYBERSOURCERY_USE_VCR_IN_TESTS: `true` or `false`. This should be `true` unless you have a special reason to change it. If you do not set this to `true` the Sinatra proxy will always forward all requests to the actual Cybersource SOP test server.
@@ -54,6 +55,7 @@ To set up your own matchers:
 1. Create a file to put your matchers in. Here is an example for detecting changes to the card type:
  
   ```ruby
+  require 'sinatra'
   require 'cybersourcery_testing/cybersource_proxy'
  
   VCR.configure do |c|
@@ -64,7 +66,7 @@ To set up your own matchers:
   end
   ```
 
-  You can make as many `register_request_matcher` calls as you need.
+  The two `require` statements are important! Also, you can make as many `register_request_matcher` calls as you need.
   
 2. Add the relative path to this file to your .env file, with the variable name `CYBERSOURCERY_SOP_PROXY_RB_PATH`. For example:
 
@@ -74,14 +76,11 @@ To set up your own matchers:
 
 ### Start the proxy server
 
-The gem comes with a rake task for starting the proxy server:
+The gem comes with a rake task for starting the proxy server, which is exported to your Rails project:
 
 ```console
 rake cybersourcery:proxy
 ```
-
-It's a Sinatra server, running with Shotgun, which means you do not need to restart it if there are application changes, as Shotgun reloads the application each time. This entails a performance cost, but provides flexibility, and helps resolve certain technical issues with running VCR in the context of a middleware proxy.
-
 
 ## Contributing
 
