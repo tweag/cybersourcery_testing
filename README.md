@@ -11,7 +11,7 @@ It includes:
 * A proxy server to stand-in for the Cybersource SOP test server. It runs on Sinatra, and includes a middleware translating proxy which directs both requests to, and responses from, the Cybersource SOP test server to the Sinatra server.
 * Detection and alerts for undocumented Cybersource SOP error conditions, where Cybersource returns only a general server error message. The proxy server will detect these conditions and raise exceptions that include clear explanations.
 * A VCR implementation to record your test transactions, for re-use in future test runs. 
-* Support for defining own VCR custom matchers, to detect variations in the data in test submissions. The gem comes with a check for changes in the credit card number. You can add checks for other fields as needed for your business requirements.
+* Support for defining your own VCR custom matchers, to detect variations in the data in test submissions. The gem comes with a check for changes in the credit card number. You can add checks for other fields as needed for your business requirements.
 
 When a test is run that shows a change against any of the defined matchers, the proxy server will forward the transaction to the actual Cybersource SOP test server, and VCR will record the transaction. Subsequent runs of the same test will rely on the VCR recording. This means you can do repeated feature/integration testing without requiring ongoing contact with the Cybersource SOP test server.
 
