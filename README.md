@@ -10,10 +10,10 @@ It includes:
 
 * A proxy server to stand-in for the Cybersource SOP test server. It runs on Sinatra, and includes a middleware translating proxy which directs both requests to, and responses from, the Cybersource SOP test server to the Sinatra server.
 * Detection and alerts for undocumented Cybersource SOP error conditions, where Cybersource returns only a general server error message. The proxy server will detect these conditions and raise exceptions that include clear explanations.
-* VCR to record your test transactions, for re-use in future test runs. 
-* The ability to define your own custom matchers, to detect variations in the data in test submissions. The gem comes with a check for changes in the credit card number. You can add checks for other fields as needed for your business requirements.
+* A VCR implementation to record your test transactions, for re-use in future test runs. 
+* Support for defining own VCR custom matchers, to detect variations in the data in test submissions. The gem comes with a check for changes in the credit card number. You can add checks for other fields as needed for your business requirements.
 
-When a test is run that shows a change against any of the matchers you have defined, the proxy server will forward the transaction to the actual Cybersource SOP test server, and VCR will record the transaction. Subsequent runs of the same test will rely on the VCR recording. This means you can do repeated feature/integration testing without requiring ongoing contact with the Cybersource SOP test server.
+When a test is run that shows a change against any of the defined matchers, the proxy server will forward the transaction to the actual Cybersource SOP test server, and VCR will record the transaction. Subsequent runs of the same test will rely on the VCR recording. This means you can do repeated feature/integration testing without requiring ongoing contact with the Cybersource SOP test server.
 
 ## Installation
 
@@ -21,6 +21,9 @@ When a test is run that shows a change against any of the matchers you have defi
 
   ```ruby
   gem 'cybersourcery_testing'
+  ```
+  
+  ```console
   bundle
   ```
 
@@ -36,7 +39,7 @@ When a test is run that shows a change against any of the matchers you have defi
 
   * CYBERSOURCERY_SOP_TEST_URL: the URL of the Cybersource Silent Order Post (SOP) test server. You should not need to change this.
   * CYBERSOURCERY_SOP_PROXY_URL: the base URL the Sinatra proxy will use.
-  * CYBERSOURCERY_SOP_PROXY_RUNNER: `ruby` by default, which means Sinatra will start. You can change this to `shotgun`, etc if you wish.
+  * CYBERSOURCERY_SOP_PROXY_RUNNER: `ruby` by default, which means it will start Sinatra. You can change this to `shotgun`, etc if you setup a different runner you prefer.
   * CYBERSOURCERY_RESPONSE_PAGE_URL: this must match the "Customer Response Page" URL you have set in the Cybersource Business Center for the profile you will use when testing.
   * CYBERSOURCERY_LOCAL_RESPONSE_PAGE_PATH: the path to the local equivalent of the "Customer Response Page" (should be in URI path format, e.g. `/confirm`)
   * CYBERSOURCERY_USE_VCR_IN_TESTS: `true` or `false`. This should be `true` unless you have a special reason to change it. If you do not set this to `true` the Sinatra proxy will always forward all requests to the actual Cybersource SOP test server.
@@ -76,7 +79,7 @@ To set up your own matchers:
 
 ### Start the proxy server
 
-The gem comes with a rake task for starting the proxy server, which is exported to your Rails project:
+The gem comes with a rake task for starting the proxy server, which is exported for use in your Rails project:
 
 ```console
 rake cybersourcery:proxy
