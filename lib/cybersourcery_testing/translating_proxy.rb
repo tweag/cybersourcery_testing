@@ -47,13 +47,6 @@ module CybersourceryTesting
     end
 
     def maybe_use_vcr(env)
-      # TODO: This *almost* works properly. Using Shotgun lets us sidestep the problem.
-      #
-      # VCR will work fine on the first test run. But without Shotgun, then the Sinatra server gets
-      # into a strange state. Subsequent test runs will hang, and canceling Sinatra isn't sufficient
-      # to stop it (you need to enter an explicit kill command). This seems to have to do with
-      # running VCR in the context of this middleware, which is not the environment for which it was
-      # designed.
       if ENV['CYBERSOURCERY_USE_VCR_IN_TESTS']
         VCR.use_cassette(
           'cybersourcery',
