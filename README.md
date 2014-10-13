@@ -4,7 +4,7 @@ The Cybersourcery Testing gem is designed for use with Rails projects, and suppo
 
 ## Features
 
-Automated testing with Cybersource SOP is more difficult than typical 3rd party services. When a transaction is submitted, Cybersource dynamically generates a hidden form in the user's browser, which it then automatically submits to your site's response page for the transaction. The Cybersourcery Testing gem handles this complexity for you.
+Automated testing with Cybersource SOP is more difficult than typical 3rd party services. When a transaction is submitted, Cybersource dynamically generates a hidden form in the user's browser, which it then automatically submits to the Cybersource Profile's "Customer Response Page URL." This URL may not correspond to your local testing environment. The Cybersourcery Testing gem uses middleware to rewrite these responses, so they can be handled in your local testing environment. It also hooks into VCR for recording transactions, and handles known but undocumented Cybersource errors.
 
 It includes:
 
