@@ -65,10 +65,7 @@ module CybersourceryTesting
     end
 
     def request_mapping
-      mappings = {
-        # our proxy                           the actual Cybersource test server
-        ENV['CYBERSOURCERY_SOP_PROXY_URL'] => ENV['CYBERSOURCERY_SOP_TEST_URL'],
-      }
+      mappings = {}
 
       if @referrer
         local_response_url = "#{@referrer.scheme}://#{@referrer.host}:#{@referrer.port}#{ENV['CYBERSOURCERY_LOCAL_RESPONSE_PAGE_PATH']}"
