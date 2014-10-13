@@ -1,5 +1,7 @@
 # Cybersourcery Testing
 
+[![Gem Version](https://badge.fury.io/rb/cybersourcery_testing.svg)](http://badge.fury.io/rb/cybersourcery_testing)
+
 The Cybersourcery Testing gem is designed for use with Rails projects, and supports feature/integration testing of the Cybersource Silent Order POST (SOP) service. It can be used with [the Cybersourcery gem](https://github.com/promptworks/cybersourcery) or as a stand-alone testing service. It uses a Sinatra proxy server and [VCR](https://github.com/vcr/vcr), to avoid the need for repeated requests to the Cybersource SOP test server.
 
 ## Features
